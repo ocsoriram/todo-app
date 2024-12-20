@@ -1,7 +1,7 @@
 {
   "name": "Backend Dev Container fastAPI",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "../Dockerfile"
   },
   "forwardPorts": [8000],
 
