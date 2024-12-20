@@ -5,10 +5,24 @@ FROM node:18-alpine
 WORKDIR /workspace
 
 # 必要な依存関係をインストール
-RUN npm install -g create-react-app
+# RUN npm install -g npm@latest
 
-# Reactプロジェクトを作成
-RUN npx create-react-app my-app
+# # package.json が存在する場合の処理
+# # ホスト側のファイルをコピーして依存関係をインストール
+# COPY package.json package-lock.json ./
+# RUN npm install || true
+
+# # Reactプロジェクトを作成
+# RUN npx create-react-app my-app
+
+# Viteプロジェクトを作成 npm initが含まれている(package.jsonが作成される)
+RUN npm create vite@latest . -- --template react
+
+# 依存関係をインストール
+RUN npm install
+
+# ソースコードをコピー
+COPY . .
 
 # 作業ディレクトリを変更
 WORKDIR /workspace/my-app
@@ -17,4 +31,4 @@ WORKDIR /workspace/my-app
 EXPOSE 3000
 
 # 開発サーバーを起動
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev", "--", "--host"]
