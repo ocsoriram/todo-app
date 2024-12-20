@@ -1,3 +1,4 @@
-.devcontainer/
+ backend/.devcontainer/
+ frontend/.devcontainer/
 
 __pycache__/

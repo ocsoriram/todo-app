@@ -1,0 +1,31 @@
+{
+  "name": "Frontend Dev Container React",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [3000],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.formatOnSave": true, // ファイル保存時に自動フォーマット
+        "files.eol": "\n", // 改行コードをLFに統一
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ] // ESLintの対象ファイル
+      },
+      "extensions": [
+        "esbenp.prettier-vscode", // コード整形
+        "eamodio.gitlens", //gitlens
+        "sinclair.react-developer-tools", //react拡張
+        "burkeholland.simple-react-snippets",
+        "dbaeumer.vscode-eslint",
+        "fabiospampinato.vscode-highlight",
+        "usernamehw.errorlens" //errorlens
+      ]
+    }
+  }
+}
