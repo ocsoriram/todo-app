@@ -1,7 +1,7 @@
 {
   "name": "Frontend Dev Container React",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "../Dockerfile"
   },
   "forwardPorts": [3000],
   "customizations": {
