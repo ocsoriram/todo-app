@@ -3,6 +3,10 @@
   "build": {
     "dockerfile": "../Dockerfile"
   },
+  "workspaceFolder": "/workspace/my-app",
+  "mounts": [
+    "source=${localWorkspaceFolder}/my-app,target=/workspace/my-app,type=bind"
+  ],
   "forwardPorts": [3000],
   "customizations": {
     "vscode": {
