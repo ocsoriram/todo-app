@@ -1,6 +1,9 @@
 # ベースイメージとしてNode.js 18を使用
 FROM node:18-alpine
 
+# 必要な依存パッケージをインストール（Gitを含む）
+RUN apk update && apk add --no-cache git
+
 # 作業ディレクトリを設定
 WORKDIR /workspace
 
@@ -16,16 +19,16 @@ WORKDIR /workspace
 # RUN npx create-react-app my-app
 
 # Viteプロジェクトを作成 npm initが含まれている(package.jsonが作成される)
-RUN npm create vite@latest . -- --template react
+RUN npm create vite@latest my-app -- --template react --force
+
+# 作業ディレクトリを変更
+WORKDIR /workspace/my-app
 
 # 依存関係をインストール
 RUN npm install
 
 # ソースコードをコピー
 COPY . .
-
-# 作業ディレクトリを変更
-WORKDIR /workspace/my-app
 
 # ポートの公開
 EXPOSE 3000
