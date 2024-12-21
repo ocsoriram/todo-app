@@ -5,7 +5,7 @@ FROM node:18-alpine
 RUN apk update && apk add --no-cache git
 
 # 作業ディレクトリを設定
-WORKDIR /workspace/my-app
+WORKDIR /workspace
 
 # 必要な依存関係をインストール
 # RUN npm install -g npm@latest
@@ -22,6 +22,8 @@ WORKDIR /workspace/my-app
 #RUN npm create vite@latest my-app -- --template react --force
 
 COPY my-app/package*.json ./
+
+WORKDIR /workspace/my-app
 
 # 依存関係をインストール
 RUN npm install
