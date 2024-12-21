@@ -1,32 +1,44 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+
+
+from typing import List
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
 
 app = FastAPI()
 
-# CORSの設定（Reactからアクセスを許可するため）
-origins = [
-    "http://localhost:3000",  # Reactのアプリが動く場所
-]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+#Taskモデル
+class Task(BaseModel):
+    id: int
+    title: str
+    completed: bool = False
 
-# 仮のTodoリスト
-todos = []
+#仮のデータストア
+tasks: List[Task] = []
 
-@app.get("/")
-def read_root():
-    return {"Hello": "FastAPI"}
+#全てのタスクを取得する
+@app.get("/tasks", respmse_model=List[Task])
+def get_tasks():
+    return tasks
 
-@app.get("/todos")
-def get_todos():
-    return todos
+# 新しいタスクを作成する
+@app.post("/tasks", response_model=Task)
+def create_task(task: Task):
+    tasks.append(task)
+    return task
 
-@app.post("/todos")
-def add_todo(item: dict):
-    todos.append(item)
-    return {"message": "OK"}
+#タスクを更新する
+@app.put("/tasks/{task_id}", response_model=Task)
+def update_task(task_id: int, update_task: Task):
+    for i, task in enumerate(tasks):
+        if task.id == task_id:
+            tasks[i] = update_task
+            return update_task
+    raise HTTPException(status_code=404, detail="Task not found")
+
+# タスクを削除
+@app.delete("/tasks/{task_id}")
+def delete_task(task_id: int):
+    global tasks
+    tasks = [task for task in tasks if task.id != task_id]
+    return {"message": "Task deleted successfully"}
