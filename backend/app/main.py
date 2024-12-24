@@ -22,10 +22,17 @@ def get_tasks():
     return tasks
 
 # 新しいタスクを作成する
+    # @app.post("/tasks", response_model=Task)
+    # def create_task(task: Task):
+    #     tasks.append(task)
+    #     return task
+
 @app.post("/tasks", response_model=Task)
 def create_task(task: Task):
-    tasks.append(task)
-    return task
+    # 自動的にIDを割り当てる
+    new_task = Task(id=len(tasks) + 1, title=task.title, completed=task.completed)
+    tasks.append(new_task)
+    return new_task
 
 #タスクを更新する
 @app.put("/tasks/{task_id}", response_model=Task)
