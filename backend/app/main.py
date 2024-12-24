@@ -17,7 +17,7 @@ class Task(BaseModel):
 tasks: List[Task] = []
 
 #全てのタスクを取得する
-@app.get("/tasks", respmse_model=List[Task])
+@app.get("/tasks", response_model=List[Task])
 def get_tasks():
     return tasks
 
