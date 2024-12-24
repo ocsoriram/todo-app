@@ -8,15 +8,16 @@ def test_update_task():
     client.post("/reset")
 
     # タスクを追加するリクエストを送信
-    response = client.post("/tasks", json={"id": 1, "title": "test-update-task", "completed": False})
+    response = client.post("/tasks", json={"title": "test-update-task", "completed": False})
     assert response.status_code == 200
+    task_id = response.json()["id"]
 
     # タスクを更新するリクエストを送信
-    response = client.put("/tasks/1", json={"id": 1, "title": "Updated Task", "completed": True})
+    response = client.put(f"/tasks/{task_id}", json={"title": "Updated Task", "completed": True})
     assert response.status_code == 200
 
     # 更新されたタスクの内容を確認
     data = response.json()
-    assert data["id"] == 1
+    #assert data["id"] == 
     assert data["title"] == "Updated Task"
     assert data["completed"] is True

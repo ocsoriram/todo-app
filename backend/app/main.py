@@ -38,21 +38,26 @@ def create_task(task: Task):
     tasks.append(new_task)
     return new_task
 
+#タスク検索のヘルパー関数
+def find_task_by_id(task_id: str) -> Task:
+    return next((task for task in tasks if task.id == task_id), None)
+
 #タスクを更新する
 @app.put("/tasks/{task_id}", response_model=Task)
 def update_task(task_id: str, update_task: Task):
-    for i, task in enumerate(tasks):
-        if task.id == task_id:
-            tasks[i] = update_task
-            return update_task
-    raise HTTPException(status_code=404, detail="Task not found")
+    task = find_task_by_id(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.title = update_task.title
+    task.completed = update_task.completed
+    return task
 
 # タスクを削除
 @app.delete("/tasks/{task_id}")
 def delete_task(task_id: str):
     global tasks
     #削除対象のタスクが存在するか確かめるささ
-    task_to_delete = next((task for task in tasks if task.id == task_id), None)
+    task_to_delete = find_task_by_id(task_id)
     if task_to_delete is None:
         raise HTTPException(status_code=404, detail="Task not found")
     #tasksのサイズは大きくならないことが予想されるので全走査で実装
