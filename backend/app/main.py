@@ -29,6 +29,9 @@ def get_tasks():
 
 @app.post("/tasks", response_model=Task)
 def create_task(task: Task):
+    # 既存のIDの重複をチェック
+    if any(t.id == task.id for t in tasks):  
+        raise HTTPException(status_code=400, detail="Task ID already exists")
     # 自動的にIDを割り当てる
     new_task = Task(id=len(tasks) + 1, title=task.title, completed=task.completed)
     tasks.append(new_task)
