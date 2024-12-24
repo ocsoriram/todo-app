@@ -50,10 +50,18 @@ def update_task(task_id: int, update_task: Task):
 @app.delete("/tasks/{task_id}")
 def delete_task(task_id: int):
     global tasks
-    #削除対象のタスクが存在するか確かめる
+    #削除対象のタスクが存在するか確かめるささ
     task_to_delete = next((task for task in tasks if task.id == task_id), None)
     if task_to_delete is None:
         raise HTTPException(status_code=404, detail="Task not found")
     #tasksのサイズは大きくならないことが予想されるので全走査で実装
     tasks = [task for task in tasks if task.id != task_id]
     return {"message": "Task deleted successfully"}
+
+
+#riset用エンドポイント
+
+@app.post("/reset")
+def reset_tasks():
+    tasks.clear()
+    return {"status": "reset"}

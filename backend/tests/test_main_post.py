@@ -5,6 +5,7 @@ client = TestClient(app)
 
 
 def test_create_task():
+    client.post("/reset")
     response = client.post("/tasks", json={"id":1,"title": "Test Task", "completed": False})
     assert response.status_code == 200
     assert response.json()["title"] == "Test Task"

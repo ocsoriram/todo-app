@@ -5,7 +5,7 @@ client = TestClient(app)
 
 def test_update_task():
     # テストの準備：タスクリストをクリアして新しいタスクを作成
-    tasks.clear()  # グローバル変数をリセット
+    client.post("/reset")
 
     # タスクを追加するリクエストを送信
     response = client.post("/tasks", json={"id": 1, "title": "test-update-task", "completed": False})
