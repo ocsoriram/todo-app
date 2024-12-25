@@ -9,14 +9,18 @@
     "vscode": {
       "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
-        "python.defaultInterpreterPath": "/usr/local/bin/python3"
+        "python.defaultInterpreterPath": "/usr/local/bin/python3",
+        "python.formatting.provider": "autopep8",
+        "editor.formatOnSave": true
       },
       "extensions": [
         "ms-python.python", // Python 拡張機能
         "ms-python.debugpy",
         "ms-python.vscode-pylance",
         "eamodio.gitlens", //gitlens
-        "usernamehw.errorlens" //errorlens
+        "usernamehw.errorlens", //errorlens
+        "fabiospampinato.vscode-highlight",
+        "ms-ceintl.vscode-language-pack-ja" //日本語化
       ]
     }
   }
