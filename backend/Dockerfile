@@ -9,6 +9,7 @@ COPY requirements.txt .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN pip install autopep8
 #キャッシュを残さない場合、以下でdockerイメージのサイズを小さくできる
 #RUN pip install --no-cache-dir -r requirements.txt
 
