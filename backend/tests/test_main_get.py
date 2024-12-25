@@ -1,15 +1,12 @@
-from fastapi.testclient import TestClient
 from app.main import *
 
-client = TestClient(app)
-
-def test_get_tasks():
+def test_get_tasks(client):
     client.post("/reset")
     response = client.get("/tasks")
     assert response.status_code == 200
     assert response.json() == []
 
-def test_get_tasks_with_data():
+def test_get_tasks_with_data(client):
     # テスト環境を準備
     client.post("/reset")
     
@@ -34,7 +31,7 @@ def test_get_tasks_with_data():
     assert any(task["id"] == task2["id"] and task["title"] == "Task 2" and task["completed"] for task in response_data)
 
 #TODO idの修正
-def test_get_tasks_with_many_items():
+def test_get_tasks_with_many_items(client):
     client.post("/reset")
     # 100件のタスクを追加
     for i in range(1, 101):
@@ -61,7 +58,7 @@ def test_get_tasks_with_many_items():
     # assert any(task["id"] == task100["id"] and task["title"] == "Task 100" and not task["completed"] for task in response_data)
 
 
-def test_get_tasks_with_invalid_query():
+def test_get_tasks_with_invalid_query(client):
     client.post("/reset")
     # タスクを追加
     collect_response = client.post("/tasks", json={"title": "Task 1", "completed": False})
