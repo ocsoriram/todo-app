@@ -1,9 +1,7 @@
-from fastapi.testclient import TestClient
 from app.main import *
 
-client = TestClient(app)
 
-def test_update_task():
+def test_update_task(client):
     # テストの準備：タスクリストをクリアして新しいタスクを作成
     client.post("/reset")
 

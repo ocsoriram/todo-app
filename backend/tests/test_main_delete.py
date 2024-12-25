@@ -1,9 +1,9 @@
-from fastapi.testclient import TestClient
+
 from app.main import *
 
-client = TestClient(app)
 
-def test_delete_task():
+
+def test_delete_task(client):
     client.post("/reset")
         # タスクを追加するリクエストを送信
     response = client.post("/tasks", json={"title": "test-delete-task", "completed": False})
@@ -18,7 +18,7 @@ def test_delete_task():
     assert response.status_code == 200
     assert len(response.json()) == 0  # タスクリストが空であることを確認
 
-def test_delete_non_existent_task():
+def test_delete_non_existent_task(client):
     client.post('/reset')
 
     # 存在しないタスクを削除しようとする
@@ -27,7 +27,7 @@ def test_delete_non_existent_task():
 
 
 #空のタスクリストを削除する処理のロジックはこのテストと同じため省略している
-def test_delete_non_existant_task():
+def test_delete_non_existant_task(client):
     client.post('/reset')
 
     response = client.delete("/tasks/111")
