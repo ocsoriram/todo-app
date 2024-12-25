@@ -34,19 +34,33 @@ def test_get_tasks_with_data():
 
 #TODO idの修正
 def test_get_tasks_with_many_items():
+
+    client.post("/reset")
     # 100件のタスクを追加
     for i in range(1, 101):
-        client.post("/tasks", json={"id": i, "title": f"Task {i}", "completed": False})
+        client.post("/tasks", json={"title": f"Task {i}", "completed": False})
+    assert response.status_code == 200
 
     # タスクリストを取得
     response = client.get("/tasks")
     assert response.status_code == 200
 
     # データサイズと内容を確認
-    data = response.json()
-    assert len(data) == 100
-    assert data[0] == {"id": 1, "title": "Task 1", "completed": False}
-    assert data[-1] == {"id": 100, "title": "Task 100", "completed": False}
+    response_data = response.json()
+    assert len(response_data) == 100
+
+    # すべてのタスクを確認
+    for i in range(1, 101):
+        task_title = f"Task {i}"
+        assert any(task["title"] == task_title and not task["completed"] for task in response_data)
+
+    # task1 = response_data[0]
+    # task100 = response_data[99]
+
+    # #各タスクがレスポンスに含まれているか確認
+    # assert any(task["id"] == task1["id"] and task["title"] == "Task 1" and not task["completed"] for task in response_data)
+    # assert any(task["id"] == task100["id"] and task["title"] == "Task 100" and not task["completed"] for task in response_data)
+
 
 #TODO idの修正
 def test_get_tasks_with_invalid_query():
