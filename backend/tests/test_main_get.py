@@ -4,6 +4,7 @@ from app.main import *
 client = TestClient(app)
 
 def test_get_tasks():
+    client.post("/reset")
     response = client.get("/tasks")
     assert response.status_code == 200
     assert response.json() == []
@@ -34,10 +35,10 @@ def test_get_tasks_with_data():
 
 #TODO idの修正
 def test_get_tasks_with_many_items():
+    client.post("/reset")
     # 100件のタスクを追加
     for i in range(1, 101):
         client.post("/tasks", json={"title": f"Task {i}", "completed": False})
-    assert response.status_code == 200
 
     # タスクリストを取得
     response = client.get("/tasks")
@@ -60,7 +61,6 @@ def test_get_tasks_with_many_items():
     # assert any(task["id"] == task100["id"] and task["title"] == "Task 100" and not task["completed"] for task in response_data)
 
 
-#TODO idの修正
 def test_get_tasks_with_invalid_query():
     client.post("/reset")
     # タスクを追加
