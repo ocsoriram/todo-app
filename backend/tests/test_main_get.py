@@ -34,8 +34,6 @@ def test_get_tasks_with_data():
 
 #TODO idの修正
 def test_get_tasks_with_many_items():
-
-    client.post("/reset")
     # 100件のタスクを追加
     for i in range(1, 101):
         client.post("/tasks", json={"title": f"Task {i}", "completed": False})
@@ -66,9 +64,14 @@ def test_get_tasks_with_many_items():
 def test_get_tasks_with_invalid_query():
     client.post("/reset")
     # タスクを追加
-    client.post("/tasks", json={"id": 1, "title": "Task 1", "completed": False})
+    collect_response = client.post("/tasks", json={"title": "Task 1", "completed": False})
+    assert collect_response.status_code == 200
+
+    task = collect_response.json()
+    task_id = task["id"]
 
     # 不正なクエリパラメータ付きでリクエスト
     response = client.get("/tasks?invalid_param=true")
     assert response.status_code == 200  # クエリパラメータは無視される
-    assert response.json() == [{"id": 1, "title": "Task 1", "completed": False}]
+    response_data = response.json()
+    assert response_data == [{"id": task_id, "title": "Task 1", "completed": False}]
