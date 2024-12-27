@@ -2,3 +2,4 @@
  frontend/.devcontainer/
 
 __pycache__/
+backend/.vscode/launch.json
